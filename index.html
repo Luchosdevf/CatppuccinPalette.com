@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catppuccin Mocha — Paleta</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crust:     #11111b;
+    --mantle:    #181825;
+    --base:      #1e1e2e;
+    --surface0:  #313244;
+    --surface1:  #45475a;
+    --surface2:  #585b70;
+    --overlay0:  #6c7086;
+    --overlay1:  #7f849c;
+    --overlay2:  #9399b2;
+    --subtext0:  #a6adc8;
+    --subtext1:  #bac2de;
+    --text:      #cdd6f4;
+    --rosewater: #f5e0dc;
+    --flamingo:  #f2cdcd;
+    --pink:      #f5c2e7;
+    --mauve:     #cba6f7;
+    --red:       #f38ba8;
+    --maroon:    #eba0ac;
+    --peach:     #fab387;
+    --yellow:    #f9e2af;
+    --green:     #a6e3a1;
+    --teal:      #94e2d5;
+    --sky:       #89dceb;
+    --sapphire:  #74c7ec;
+    --blue:      #89b4fa;
+    --lavender:  #b4befe;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--base);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245,224,220,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,224,220,.06) 1px, transparent 1px),
+      linear-gradient(rgba(245,224,220,.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,224,220,.03) 1px, transparent 1px);
+    background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 64px 32px 100px;
+  }
+
+  header {
+    margin-bottom: 64px;
+  }
+  header .eyebrow {
+    font-size: 10px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--rosewater);
+    margin-bottom: 10px;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.05;
+  }
+  header h1 span { color: var(--rosewater); }
+  header p {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--subtext0);
+  }
+
+  /* ── Section ── */
+  .section { margin-bottom: 48px; }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .section-header h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    color: var(--subtext1);
+  }
+  .section-header .line {
+    flex: 1;
+    height: 1px;
+    background: var(--surface1);
+  }
+  .section-header .count {
+    font-size: 10px;
+    color: var(--overlay0);
+    letter-spacing: .06em;
+  }
+
+  /* ── Grid ── */
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+  }
+
+  /* ── Swatch card ── */
+  .swatch {
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+    position: relative;
+    border: 1px solid rgba(255,255,255,.06);
+  }
+  .swatch:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  }
+  .swatch:active { transform: scale(.97); }
+
+  .swatch-color {
+    height: 72px;
+    width: 100%;
+  }
+
+  .swatch-info {
+    background: var(--mantle);
+    padding: 10px 12px;
+  }
+  .swatch-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .swatch-hex {
+    font-size: 10px;
+    color: var(--subtext0);
+  }
+  .swatch-use {
+    font-size: 9px;
+    color: var(--overlay1);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  /* ── Toast ── */
+  #toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--surface0);
+    border: 1px solid var(--surface1);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  #toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  #toast .dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    margin-right: 7px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+</style>
+</head>
+<body>
+
+<div id="toast"><span class="dot" id="toast-dot"></span><span id="toast-text"></span></div>
+
+<div class="page">
+
+  <header>
+    <div class="eyebrow">color system</div>
+    <h1>Catppuccin <span>Mocha</span></h1>
+    <p>Click en cualquier color para copiar el hex al portapapeles.</p>
+  </header>
+
+  <!-- FONDOS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Fondos</h2>
+      <div class="line"></div>
+      <div class="count">3 colores</div>
+    </div>
+    <div class="swatches">
+      <div class="swatch" onclick="copy('#11111b', 'crust', this)">
+        <div class="swatch-color" style="background:#11111b"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">crust</div>
+          <div class="swatch-hex">#11111b</div>
+          <div class="swatch-use">Fondo más profundo · sidebars · modales</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#181825', 'mantle', this)">
+        <div class="swatch-color" style="background:#181825"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">mantle</div>
+          <div class="swatch-hex">#181825</div>
+          <div class="swatch-use">Fondo secundario · cards elevadas</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#1e1e2e', 'base', this)">
+        <div class="swatch-color" style="background:#1e1e2e"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">base</div>
+          <div class="swatch-hex">#1e1e2e</div>
+          <div class="swatch-use">Fondo principal de la app</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPERFICIES -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Superficies</h2>
+      <div class="line"></div>
+      <div class="count">3 colores</div>
+    </div>
+    <div class="swatches">
+      <div class="swatch" onclick="copy('#313244', 'surface0', this)">
+        <div class="swatch-color" style="background:#313244"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">surface0</div>
+          <div class="swatch-hex">#313244</div>
+          <div class="swatch-use">Cards · inputs · dropdowns</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#45475a', 'surface1', this)">
+        <div class="swatch-color" style="background:#45475a"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">surface1</div>
+          <div class="swatch-hex">#45475a</div>
+          <div class="swatch-use">Hover de cards · bordes sutiles</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#585b70', 'surface2', this)">
+        <div class="swatch-color" style="background:#585b70"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">surface2</div>
+          <div class="swatch-hex">#585b70</div>
+          <div class="swatch-use">Bordes activos · divisores</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEXTO -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Texto</h2>
+      <div class="line"></div>
+      <div class="count">6 colores</div>
+    </div>
+    <div class="swatches">
+      <div class="swatch" onclick="copy('#cdd6f4', 'text', this)">
+        <div class="swatch-color" style="background:#cdd6f4"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">text</div>
+          <div class="swatch-hex">#cdd6f4</div>
+          <div class="swatch-use">Texto principal</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#bac2de', 'subtext1', this)">
+        <div class="swatch-color" style="background:#bac2de"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">subtext1</div>
+          <div class="swatch-hex">#bac2de</div>
+          <div class="swatch-use">Texto secundario</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#a6adc8', 'subtext0', this)">
+        <div class="swatch-color" style="background:#a6adc8"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">subtext0</div>
+          <div class="swatch-hex">#a6adc8</div>
+          <div class="swatch-use">Placeholders · labels</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#9399b2', 'overlay2', this)">
+        <div class="swatch-color" style="background:#9399b2"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">overlay2</div>
+          <div class="swatch-hex">#9399b2</div>
+          <div class="swatch-use">Texto deshabilitado</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#7f849c', 'overlay1', this)">
+        <div class="swatch-color" style="background:#7f849c"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">overlay1</div>
+          <div class="swatch-hex">#7f849c</div>
+          <div class="swatch-use">Comentarios de código</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#6c7086', 'overlay0', this)">
+        <div class="swatch-color" style="background:#6c7086"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">overlay0</div>
+          <div class="swatch-hex">#6c7086</div>
+          <div class="swatch-use">Texto muy apagado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACENTOS CÁLIDOS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Acentos cálidos</h2>
+      <div class="line"></div>
+      <div class="count">6 colores</div>
+    </div>
+    <div class="swatches">
+      <div class="swatch" onclick="copy('#f5e0dc', 'rosewater', this)">
+        <div class="swatch-color" style="background:#f5e0dc"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">rosewater</div>
+          <div class="swatch-hex">#f5e0dc</div>
+          <div class="swatch-use">Bordes delicados · hover suave</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#f2cdcd', 'flamingo', this)">
+        <div class="swatch-color" style="background:#f2cdcd"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">flamingo</div>
+          <div class="swatch-hex">#f2cdcd</div>
+          <div class="swatch-use">Alertas suaves · íconos deco</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#f5c2e7', 'pink', this)">
+        <div class="swatch-color" style="background:#f5c2e7"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">pink</div>
+          <div class="swatch-hex">#f5c2e7</div>
+          <div class="swatch-use">Favoritos · acciones positivas</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#fab387', 'peach', this)">
+        <div class="swatch-color" style="background:#fab387"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">peach</div>
+          <div class="swatch-hex">#fab387</div>
+          <div class="swatch-use">Warnings · badges de atención</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#f9e2af', 'yellow', this)">
+        <div class="swatch-color" style="background:#f9e2af"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">yellow</div>
+          <div class="swatch-hex">#f9e2af</div>
+          <div class="swatch-use">Info · notas · tips</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#f38ba8', 'red', this)">
+        <div class="swatch-color" style="background:#f38ba8"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">red</div>
+          <div class="swatch-hex">#f38ba8</div>
+          <div class="swatch-use">Errores · destructivo</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#eba0ac', 'maroon', this)">
+        <div class="swatch-color" style="background:#eba0ac"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">maroon</div>
+          <div class="swatch-hex">#eba0ac</div>
+          <div class="swatch-use">Warnings secundarios</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACENTOS FRÍOS -->
+  <div class="section">
+    <div class="section-header">
+      <h2>Acentos fríos</h2>
+      <div class="line"></div>
+      <div class="count">7 colores</div>
+    </div>
+    <div class="swatches">
+      <div class="swatch" onclick="copy('#cba6f7', 'mauve', this)">
+        <div class="swatch-color" style="background:#cba6f7"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">mauve</div>
+          <div class="swatch-hex">#cba6f7</div>
+          <div class="swatch-use">Acento primario · links · focus</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#b4befe', 'lavender', this)">
+        <div class="swatch-color" style="background:#b4befe"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">lavender</div>
+          <div class="swatch-hex">#b4befe</div>
+          <div class="swatch-use">Acento suave · títulos deco</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#89b4fa', 'blue', this)">
+        <div class="swatch-color" style="background:#89b4fa"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">blue</div>
+          <div class="swatch-hex">#89b4fa</div>
+          <div class="swatch-use">Acento principal · código</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#74c7ec', 'sapphire', this)">
+        <div class="swatch-color" style="background:#74c7ec"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">sapphire</div>
+          <div class="swatch-hex">#74c7ec</div>
+          <div class="swatch-use">Acento frío · selección</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#89dceb', 'sky', this)">
+        <div class="swatch-color" style="background:#89dceb"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">sky</div>
+          <div class="swatch-hex">#89dceb</div>
+          <div class="swatch-use">Links secundarios · íconos info</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#94e2d5', 'teal', this)">
+        <div class="swatch-color" style="background:#94e2d5"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">teal</div>
+          <div class="swatch-hex">#94e2d5</div>
+          <div class="swatch-use">Acento secundario · tags técnicos</div>
+        </div>
+      </div>
+      <div class="swatch" onclick="copy('#a6e3a1', 'green', this)">
+        <div class="swatch-color" style="background:#a6e3a1"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">green</div>
+          <div class="swatch-hex">#a6e3a1</div>
+          <div class="swatch-use">Éxito · online · confirmación</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let toastTimer;
+
+  function copy(hex, name, el) {
+    navigator.clipboard.writeText(hex).then(() => {
+      const color = getComputedStyle(el).getPropertyValue('background-color');
+      const dot = document.getElementById('toast-dot');
+      const text = document.getElementById('toast-text');
+      const toast = document.getElementById('toast');
+      dot.style.background = hex;
+      text.textContent = `${name}  ${hex}`;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+    });
+  }
+</script>
+</body>
+</html>
