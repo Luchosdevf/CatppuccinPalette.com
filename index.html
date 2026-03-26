@@ -1,497 +1,1031 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Catppuccin Mocha — Paleta</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<title>Catppuccin Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --crust:     #11111b;
-    --mantle:    #181825;
-    --base:      #1e1e2e;
-    --surface0:  #313244;
-    --surface1:  #45475a;
-    --surface2:  #585b70;
-    --overlay0:  #6c7086;
-    --overlay1:  #7f849c;
-    --overlay2:  #9399b2;
-    --subtext0:  #a6adc8;
-    --subtext1:  #bac2de;
-    --text:      #cdd6f4;
-    --rosewater: #f5e0dc;
-    --flamingo:  #f2cdcd;
-    --pink:      #f5c2e7;
-    --mauve:     #cba6f7;
-    --red:       #f38ba8;
-    --maroon:    #eba0ac;
-    --peach:     #fab387;
-    --yellow:    #f9e2af;
-    --green:     #a6e3a1;
-    --teal:      #94e2d5;
-    --sky:       #89dceb;
-    --sapphire:  #74c7ec;
-    --blue:      #89b4fa;
-    --lavender:  #b4befe;
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #1e1e2e;
+  --fg: #cdd6f4;
+  --sub: #a6adc8;
+  --muted: #6c7086;
+  --s0: #313244;
+  --s1: #45475a;
+  --accent: #cba6f7;
+  --grid-line: rgba(245,224,220,.06);
+  --ease: cubic-bezier(.4, 0, .2, 1);
+  --ease-out: cubic-bezier(0, 0, .2, 1);
+}
 
-  body {
-    background: var(--base);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    min-height: 100vh;
-  }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'DM Mono', monospace;
+  min-height: 100vh;
+  transition: background .5s var(--ease), color .5s var(--ease);
+}
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(245,224,220,.06) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(245,224,220,.06) 1px, transparent 1px),
-      linear-gradient(rgba(245,224,220,.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(245,224,220,.03) 1px, transparent 1px);
-    background-size: 40px 40px, 40px 40px, 8px 8px, 8px 8px;
-    pointer-events: none;
-    z-index: 0;
-  }
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.012) 1px, transparent 1px);
+  background-size: 48px 48px, 48px 48px, 8px 8px, 8px 8px;
+  pointer-events: none;
+  z-index: 0;
+}
 
-  .page {
-    position: relative;
-    z-index: 1;
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 64px 32px 100px;
-  }
+/* ── Layout ── */
+.app { display: flex; min-height: 100vh; }
 
-  header {
-    margin-bottom: 64px;
-  }
-  header .eyebrow {
-    font-size: 10px;
-    letter-spacing: .22em;
-    text-transform: uppercase;
-    color: var(--rosewater);
-    margin-bottom: 10px;
-  }
-  header h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 800;
-    color: var(--text);
-    line-height: 1.05;
-  }
-  header h1 span { color: var(--rosewater); }
-  header p {
-    margin-top: 10px;
-    font-size: 12px;
-    color: var(--subtext0);
-  }
+/* ── Sidebar ── */
+.sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: rgba(0,0,0,.2);
+  border-right: 1px solid rgba(255,255,255,.05);
+  padding: 28px 12px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 
-  /* ── Section ── */
-  .section { margin-bottom: 48px; }
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  .section-header h2 {
-    font-family: 'Syne', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .14em;
-    color: var(--subtext1);
-  }
-  .section-header .line {
-    flex: 1;
-    height: 1px;
-    background: var(--surface1);
-  }
-  .section-header .count {
-    font-size: 10px;
-    color: var(--overlay0);
-    letter-spacing: .06em;
-  }
+.sidebar-logo {
+  padding: 4px 8px 24px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.sidebar-logo .logo-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--fg);
+  line-height: 1.1;
+}
+.sidebar-logo .logo-sub {
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
 
-  /* ── Grid ── */
-  .swatches {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 8px;
-  }
+.sidebar-group-label {
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 16px 8px 6px;
+}
 
-  /* ── Swatch card ── */
-  .swatch {
-    border-radius: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform .15s ease, box-shadow .15s ease;
-    position: relative;
-    border: 1px solid rgba(255,255,255,.06);
-  }
-  .swatch:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,.4);
-  }
-  .swatch:active { transform: scale(.97); }
+.sidebar-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 10px;
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--sub);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  border-radius: 8px;
+  transition: color .25s var(--ease), background .25s var(--ease);
+  position: relative;
+}
 
-  .swatch-color {
-    height: 72px;
-    width: 100%;
-  }
+}
+.sidebar-btn.active {
+  color: var(--fg);
+  background: rgba(255,255,255,.08);
+}
+.sidebar-btn.active .sidebar-dot {
+  box-shadow: 0 0 0 3px rgba(255,255,255,.12);
+}
+.sidebar-dot {
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: box-shadow .3s var(--ease);
+}
+.flavor-tag {
+  margin-left: auto;
+  font-size: 8px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 20px;
+  background: rgba(255,255,255,.06);
+  color: var(--muted);
+}
 
-  .swatch-info {
-    background: var(--mantle);
-    padding: 10px 12px;
-  }
-  .swatch-name {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 2px;
-  }
-  .swatch-hex {
-    font-size: 10px;
-    color: var(--subtext0);
-  }
-  .swatch-use {
-    font-size: 9px;
-    color: var(--overlay1);
-    margin-top: 4px;
-    line-height: 1.4;
-  }
+/* ── Main ── */
+.main {
+  flex: 1;
+  padding: 56px 52px 120px;
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  max-width: 960px;
+}
 
-  /* ── Toast ── */
-  #toast {
-    position: fixed;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%) translateY(12px);
-    background: var(--surface0);
-    border: 1px solid var(--surface1);
-    color: var(--text);
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    padding: 10px 18px;
-    border-radius: 8px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .2s ease, transform .2s ease;
-    z-index: 999;
-    white-space: nowrap;
-  }
-  #toast.show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0);
-  }
-  #toast .dot {
-    display: inline-block;
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    margin-right: 7px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-  }
+/* ── Palette header ── */
+.palette-header {
+  margin-bottom: 64px;
+}
+.palette-eyebrow {
+  font-size: 9px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+  opacity: .8;
+}
+.palette-title {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  line-height: 1.0;
+  color: var(--fg);
+}
+.palette-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.palette-desc {
+  font-size: 11px;
+  color: var(--sub);
+  line-height: 1.8;
+  flex: 1;
+  min-width: 200px;
+}
+.palette-badge {
+  font-size: 9px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.1);
+  color: var(--sub);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Section block ── */
+.section {
+  margin-bottom: 72px;
+  background: rgba(0,0,0,.28);
+  backdrop-filter: blur(28px) saturate(1.4);
+  -webkit-backdrop-filter: blur(28px) saturate(1.4);
+  border: 1px solid rgba(255,255,255,.09);
+  box-shadow: 0 8px 40px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.07);
+  border-radius: 18px;
+  padding: 28px 28px 24px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.section-icon {
+  width: 28px; height: 28px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.06);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--fg);
+}
+.section-line { flex: 1; height: 1px; background: rgba(255,255,255,.06); }
+.section-count {
+  font-size: 10px;
+  color: var(--muted);
+  background: rgba(255,255,255,.05);
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+
+/* ── Card swatches ── */
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.swatch {
+  width: 110px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.35);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  box-shadow: 0 4px 16px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.08);
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+  position: relative;
+  clip-path: inset(0 round 12px);
+}
+.swatch:active {
+  transform: scale(.96);
+  transition-duration: .1s;
+}
+
+.swatch-color {
+  height: 80px;
+  width: 100%;
+  position: relative;
+}
+
+.swatch-check {
+  position: absolute;
+  inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,.3);
+  font-size: 18px;
+  opacity: 0;
+  transition: opacity .25s var(--ease);
+}
+.swatch.copied .swatch-check { opacity: 1; }
+
+.swatch-info {
+  padding: 9px 10px 10px;
+  background: rgba(0,0,0,.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.swatch-name {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.swatch-hex {
+  font-size: 9px;
+  color: var(--sub);
+  margin-top: 1px;
+  font-style: italic;
+}
+.swatch-use {
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
+/* ── Mini UI preview ── */
+.preview-wrap {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,.05);
+}
+.preview-label {
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.preview-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,.04);
+}
+
+/* ── Toast ── */
+#toast {
+  position: fixed;
+  bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--s0);
+  border: 1px solid rgba(255,255,255,.1);
+  color: var(--fg);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  padding: 8px 16px 8px 12px;
+  border-radius: 999px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+  z-index: 999;
+  display: flex; align-items: center; gap: 9px;
+  white-space: nowrap;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+#toast-dot {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background .2s var(--ease);
+}
+
+/* ── Fade in animation for sections ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.section {
+  animation: fadeUp .45s var(--ease-out) both;
+}
+.section:nth-child(1) { animation-delay: .05s; }
+.section:nth-child(2) { animation-delay: .10s; }
+.section:nth-child(3) { animation-delay: .15s; }
+.section:nth-child(4) { animation-delay: .20s; }
+.section:nth-child(5) { animation-delay: .25s; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--s1); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--s0); }
 </style>
 </head>
 <body>
 
-<div id="toast"><span class="dot" id="toast-dot"></span><span id="toast-text"></span></div>
+<div id="toast"><div id="toast-dot"></div><span id="toast-text"></span></div>
 
-<div class="page">
+<div class="app">
 
-  <header>
-    <div class="eyebrow">color system</div>
-    <h1>Catppuccin <span>Mocha</span></h1>
-    <p>Click en cualquier color para copiar el hex al portapapeles.</p>
-  </header>
+  <!-- ── Sidebar ── -->
+  <nav class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-title">Catppuccin</div>
+      <div class="logo-sub">explorador de paletas</div>
+    </div>
 
-  <!-- FONDOS -->
-  <div class="section">
-    <div class="section-header">
-      <h2>Fondos</h2>
-      <div class="line"></div>
-      <div class="count">3 colores</div>
-    </div>
-    <div class="swatches">
-      <div class="swatch" onclick="copy('#11111b', 'crust', this)">
-        <div class="swatch-color" style="background:#11111b"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">crust</div>
-          <div class="swatch-hex">#11111b</div>
-          <div class="swatch-use">Fondo más profundo · sidebars · modales</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#181825', 'mantle', this)">
-        <div class="swatch-color" style="background:#181825"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">mantle</div>
-          <div class="swatch-hex">#181825</div>
-          <div class="swatch-use">Fondo secundario · cards elevadas</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#1e1e2e', 'base', this)">
-        <div class="swatch-color" style="background:#1e1e2e"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">base</div>
-          <div class="swatch-hex">#1e1e2e</div>
-          <div class="swatch-use">Fondo principal de la app</div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div class="sidebar-group-label">Oficial</div>
+    <button class="sidebar-btn active" onclick="setFlavor('latte')" id="btn-latte">
+      <div class="sidebar-dot" style="background:#dd7878"></div>
+      Latte
+      <span class="flavor-tag">claro</span>
+    </button>
+    <button class="sidebar-btn" onclick="setFlavor('frappe')" id="btn-frappe">
+      <div class="sidebar-dot" style="background:#ca9ee6"></div>
+      Frappé
+      <span class="flavor-tag">oscuro</span>
+    </button>
+    <button class="sidebar-btn" onclick="setFlavor('macchiato')" id="btn-macchiato">
+      <div class="sidebar-dot" style="background:#c6a0f6"></div>
+      Macchiato
+      <span class="flavor-tag">oscuro</span>
+    </button>
+    <button class="sidebar-btn" onclick="setFlavor('mocha')" id="btn-mocha">
+      <div class="sidebar-dot" style="background:#cba6f7"></div>
+      Mocha
+      <span class="flavor-tag">oscuro</span>
+    </button>
 
-  <!-- SUPERFICIES -->
-  <div class="section">
-    <div class="section-header">
-      <h2>Superficies</h2>
-      <div class="line"></div>
-      <div class="count">3 colores</div>
-    </div>
-    <div class="swatches">
-      <div class="swatch" onclick="copy('#313244', 'surface0', this)">
-        <div class="swatch-color" style="background:#313244"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">surface0</div>
-          <div class="swatch-hex">#313244</div>
-          <div class="swatch-use">Cards · inputs · dropdowns</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#45475a', 'surface1', this)">
-        <div class="swatch-color" style="background:#45475a"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">surface1</div>
-          <div class="swatch-hex">#45475a</div>
-          <div class="swatch-use">Hover de cards · bordes sutiles</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#585b70', 'surface2', this)">
-        <div class="swatch-color" style="background:#585b70"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">surface2</div>
-          <div class="swatch-hex">#585b70</div>
-          <div class="swatch-use">Bordes activos · divisores</div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div class="sidebar-group-label">Comunidad</div>
+    <button class="sidebar-btn" onclick="setFlavor('tokyo')" id="btn-tokyo">
+      <div class="sidebar-dot" style="background:#7aa2f7"></div>
+      Tokyo Night
+    </button>
+    <button class="sidebar-btn" onclick="setFlavor('rose-pine')" id="btn-rose-pine">
+      <div class="sidebar-dot" style="background:#ebbcba"></div>
+      Rosé Pine
+    </button>
+    <button class="sidebar-btn" onclick="setFlavor('nord')" id="btn-nord">
+      <div class="sidebar-dot" style="background:#88c0d0"></div>
+      Nord
+    </button>
+    <button class="sidebar-btn" onclick="setFlavor('gruvbox')" id="btn-gruvbox">
+      <div class="sidebar-dot" style="background:#d79921"></div>
+      Gruvbox
+    </button>
+    <button class="sidebar-btn" onclick="setFlavor('dracula')" id="btn-dracula">
+      <div class="sidebar-dot" style="background:#bd93f9"></div>
+      Dracula
+    </button>
+  </nav>
 
-  <!-- TEXTO -->
-  <div class="section">
-    <div class="section-header">
-      <h2>Texto</h2>
-      <div class="line"></div>
-      <div class="count">6 colores</div>
-    </div>
-    <div class="swatches">
-      <div class="swatch" onclick="copy('#cdd6f4', 'text', this)">
-        <div class="swatch-color" style="background:#cdd6f4"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">text</div>
-          <div class="swatch-hex">#cdd6f4</div>
-          <div class="swatch-use">Texto principal</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#bac2de', 'subtext1', this)">
-        <div class="swatch-color" style="background:#bac2de"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">subtext1</div>
-          <div class="swatch-hex">#bac2de</div>
-          <div class="swatch-use">Texto secundario</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#a6adc8', 'subtext0', this)">
-        <div class="swatch-color" style="background:#a6adc8"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">subtext0</div>
-          <div class="swatch-hex">#a6adc8</div>
-          <div class="swatch-use">Placeholders · labels</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#9399b2', 'overlay2', this)">
-        <div class="swatch-color" style="background:#9399b2"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">overlay2</div>
-          <div class="swatch-hex">#9399b2</div>
-          <div class="swatch-use">Texto deshabilitado</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#7f849c', 'overlay1', this)">
-        <div class="swatch-color" style="background:#7f849c"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">overlay1</div>
-          <div class="swatch-hex">#7f849c</div>
-          <div class="swatch-use">Comentarios de código</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#6c7086', 'overlay0', this)">
-        <div class="swatch-color" style="background:#6c7086"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">overlay0</div>
-          <div class="swatch-hex">#6c7086</div>
-          <div class="swatch-use">Texto muy apagado</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ACENTOS CÁLIDOS -->
-  <div class="section">
-    <div class="section-header">
-      <h2>Acentos cálidos</h2>
-      <div class="line"></div>
-      <div class="count">6 colores</div>
-    </div>
-    <div class="swatches">
-      <div class="swatch" onclick="copy('#f5e0dc', 'rosewater', this)">
-        <div class="swatch-color" style="background:#f5e0dc"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">rosewater</div>
-          <div class="swatch-hex">#f5e0dc</div>
-          <div class="swatch-use">Bordes delicados · hover suave</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#f2cdcd', 'flamingo', this)">
-        <div class="swatch-color" style="background:#f2cdcd"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">flamingo</div>
-          <div class="swatch-hex">#f2cdcd</div>
-          <div class="swatch-use">Alertas suaves · íconos deco</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#f5c2e7', 'pink', this)">
-        <div class="swatch-color" style="background:#f5c2e7"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">pink</div>
-          <div class="swatch-hex">#f5c2e7</div>
-          <div class="swatch-use">Favoritos · acciones positivas</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#fab387', 'peach', this)">
-        <div class="swatch-color" style="background:#fab387"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">peach</div>
-          <div class="swatch-hex">#fab387</div>
-          <div class="swatch-use">Warnings · badges de atención</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#f9e2af', 'yellow', this)">
-        <div class="swatch-color" style="background:#f9e2af"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">yellow</div>
-          <div class="swatch-hex">#f9e2af</div>
-          <div class="swatch-use">Info · notas · tips</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#f38ba8', 'red', this)">
-        <div class="swatch-color" style="background:#f38ba8"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">red</div>
-          <div class="swatch-hex">#f38ba8</div>
-          <div class="swatch-use">Errores · destructivo</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#eba0ac', 'maroon', this)">
-        <div class="swatch-color" style="background:#eba0ac"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">maroon</div>
-          <div class="swatch-hex">#eba0ac</div>
-          <div class="swatch-use">Warnings secundarios</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ACENTOS FRÍOS -->
-  <div class="section">
-    <div class="section-header">
-      <h2>Acentos fríos</h2>
-      <div class="line"></div>
-      <div class="count">7 colores</div>
-    </div>
-    <div class="swatches">
-      <div class="swatch" onclick="copy('#cba6f7', 'mauve', this)">
-        <div class="swatch-color" style="background:#cba6f7"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">mauve</div>
-          <div class="swatch-hex">#cba6f7</div>
-          <div class="swatch-use">Acento primario · links · focus</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#b4befe', 'lavender', this)">
-        <div class="swatch-color" style="background:#b4befe"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">lavender</div>
-          <div class="swatch-hex">#b4befe</div>
-          <div class="swatch-use">Acento suave · títulos deco</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#89b4fa', 'blue', this)">
-        <div class="swatch-color" style="background:#89b4fa"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">blue</div>
-          <div class="swatch-hex">#89b4fa</div>
-          <div class="swatch-use">Acento principal · código</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#74c7ec', 'sapphire', this)">
-        <div class="swatch-color" style="background:#74c7ec"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">sapphire</div>
-          <div class="swatch-hex">#74c7ec</div>
-          <div class="swatch-use">Acento frío · selección</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#89dceb', 'sky', this)">
-        <div class="swatch-color" style="background:#89dceb"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">sky</div>
-          <div class="swatch-hex">#89dceb</div>
-          <div class="swatch-use">Links secundarios · íconos info</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#94e2d5', 'teal', this)">
-        <div class="swatch-color" style="background:#94e2d5"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">teal</div>
-          <div class="swatch-hex">#94e2d5</div>
-          <div class="swatch-use">Acento secundario · tags técnicos</div>
-        </div>
-      </div>
-      <div class="swatch" onclick="copy('#a6e3a1', 'green', this)">
-        <div class="swatch-color" style="background:#a6e3a1"></div>
-        <div class="swatch-info">
-          <div class="swatch-name">green</div>
-          <div class="swatch-hex">#a6e3a1</div>
-          <div class="swatch-use">Éxito · online · confirmación</div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- ── Main ── -->
+  <main class="main" id="main"></main>
 
 </div>
 
 <script>
-  let toastTimer;
+// ─────────────────────────────────────────────
+// PALETTE DATA
+// ─────────────────────────────────────────────
+const PALETTES = {
 
-  function copy(hex, name, el) {
-    navigator.clipboard.writeText(hex).then(() => {
-      const color = getComputedStyle(el).getPropertyValue('background-color');
-      const dot = document.getElementById('toast-dot');
-      const text = document.getElementById('toast-text');
-      const toast = document.getElementById('toast');
-      dot.style.background = hex;
-      text.textContent = `${name}  ${hex}`;
-      toast.classList.add('show');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
-    });
+  latte: {
+    name: 'Latte', tag: 'Light · Warm', isLight: true,
+    desc: 'The lightest flavor. Warm cream and coffee tones — ideal for daytime use and print-adjacent UIs.',
+    accent: '#8839ef',
+    bg: '#eff1f5', fg: '#4c4f69', sub: '#6c6f85', muted: '#9ca0b0',
+    s0: '#e6e9ef', s1: '#dce0e8', gridLine: 'rgba(76,79,105,.08)',
+    sections: [
+      { title: 'Backgrounds', colors: [
+        { name: 'base',    hex: '#eff1f5', use: 'Main app background' },
+        { name: 'mantle',  hex: '#e6e9ef', use: 'Secondary bg · cards' },
+        { name: 'crust',   hex: '#dce0e8', use: 'Deepest bg · sidebars' },
+      ]},
+      { title: 'Surfaces', colors: [
+        { name: 'surface0', hex: '#ccd0da', use: 'Cards · inputs' },
+        { name: 'surface1', hex: '#bcc0cc', use: 'Hover states · dividers' },
+        { name: 'surface2', hex: '#acb0be', use: 'Active borders' },
+      ]},
+      { title: 'Text', colors: [
+        { name: 'text',     hex: '#4c4f69', use: 'Primary text' },
+        { name: 'subtext1', hex: '#5c5f77', use: 'Secondary text' },
+        { name: 'subtext0', hex: '#6c6f85', use: 'Placeholders · labels' },
+        { name: 'overlay2', hex: '#7c7f93', use: 'Disabled text' },
+        { name: 'overlay1', hex: '#8c8fa1', use: 'Code comments' },
+        { name: 'overlay0', hex: '#9ca0b0', use: 'Very muted text' },
+      ]},
+      { title: 'Accents', colors: [
+        { name: 'rosewater', hex: '#dc8a78', use: 'Decorative borders · hover' },
+        { name: 'flamingo',  hex: '#dd7878', use: 'Soft alerts · icons' },
+        { name: 'pink',      hex: '#ea76cb', use: 'Favorites · positive actions' },
+        { name: 'mauve',     hex: '#8839ef', use: 'Primary accent · links · focus' },
+        { name: 'red',       hex: '#d20f39', use: 'Errors · destructive' },
+        { name: 'maroon',    hex: '#e64553', use: 'Secondary warnings' },
+        { name: 'peach',     hex: '#fe640b', use: 'Warnings · attention badges' },
+        { name: 'yellow',    hex: '#df8e1d', use: 'Info · notes · tips' },
+        { name: 'green',     hex: '#40a02b', use: 'Success · online · confirm' },
+        { name: 'teal',      hex: '#179299', use: 'Secondary accent · tech tags' },
+        { name: 'sky',       hex: '#04a5e5', use: 'Secondary links · info icons' },
+        { name: 'sapphire',  hex: '#209fb5', use: 'Cold accent · selection' },
+        { name: 'blue',      hex: '#1e66f5', use: 'Main alt accent · code' },
+        { name: 'lavender',  hex: '#7287fd', use: 'Soft accent · decorative titles' },
+      ]},
+    ]
+  },
+
+  frappe: {
+    name: 'Frappé', tag: 'Dark · Cool', isLight: false,
+    desc: 'A cooler, slightly lighter dark flavor. Muted blues and purples — great for long coding sessions.',
+    accent: '#ca9ee6',
+    bg: '#303446', fg: '#c6d0f5', sub: '#a5adce', muted: '#626880',
+    s0: '#414559', s1: '#51576d', gridLine: 'rgba(198,208,245,.05)',
+    sections: [
+      { title: 'Backgrounds', colors: [
+        { name: 'base',   hex: '#303446', use: 'Main app background' },
+        { name: 'mantle', hex: '#292c3c', use: 'Secondary bg · cards' },
+        { name: 'crust',  hex: '#232634', use: 'Deepest bg · sidebars' },
+      ]},
+      { title: 'Surfaces', colors: [
+        { name: 'surface0', hex: '#414559', use: 'Cards · inputs' },
+        { name: 'surface1', hex: '#51576d', use: 'Hover states · dividers' },
+        { name: 'surface2', hex: '#626880', use: 'Active borders' },
+      ]},
+      { title: 'Text', colors: [
+        { name: 'text',     hex: '#c6d0f5', use: 'Primary text' },
+        { name: 'subtext1', hex: '#b5bfe2', use: 'Secondary text' },
+        { name: 'subtext0', hex: '#a5adce', use: 'Placeholders · labels' },
+        { name: 'overlay2', hex: '#949cbb', use: 'Disabled text' },
+        { name: 'overlay1', hex: '#838ba7', use: 'Code comments' },
+        { name: 'overlay0', hex: '#737994', use: 'Very muted text' },
+      ]},
+      { title: 'Accents', colors: [
+        { name: 'rosewater', hex: '#f2d5cf', use: 'Decorative borders · hover' },
+        { name: 'flamingo',  hex: '#eebebe', use: 'Soft alerts · icons' },
+        { name: 'pink',      hex: '#f4b8e4', use: 'Favorites · positive actions' },
+        { name: 'mauve',     hex: '#ca9ee6', use: 'Primary accent · links · focus' },
+        { name: 'red',       hex: '#e78284', use: 'Errors · destructive' },
+        { name: 'maroon',    hex: '#ea999c', use: 'Secondary warnings' },
+        { name: 'peach',     hex: '#ef9f76', use: 'Warnings · attention badges' },
+        { name: 'yellow',    hex: '#e5c890', use: 'Info · notes · tips' },
+        { name: 'green',     hex: '#a6d189', use: 'Success · online · confirm' },
+        { name: 'teal',      hex: '#81c8be', use: 'Secondary accent · tech tags' },
+        { name: 'sky',       hex: '#99d1db', use: 'Secondary links · info icons' },
+        { name: 'sapphire',  hex: '#85c1dc', use: 'Cold accent · selection' },
+        { name: 'blue',      hex: '#8caaee', use: 'Main alt accent · code' },
+        { name: 'lavender',  hex: '#babbf1', use: 'Soft accent · decorative titles' },
+      ]},
+    ]
+  },
+
+  macchiato: {
+    name: 'Macchiato', tag: 'Dark · Warm', isLight: false,
+    desc: 'Darker than Frappé, warmer than Mocha. The middle ground — rich without being heavy.',
+    accent: '#c6a0f6',
+    bg: '#24273a', fg: '#cad3f5', sub: '#a5adcb', muted: '#5b6078',
+    s0: '#363a4f', s1: '#494d64', gridLine: 'rgba(202,211,245,.05)',
+    sections: [
+      { title: 'Backgrounds', colors: [
+        { name: 'base',   hex: '#24273a', use: 'Main app background' },
+        { name: 'mantle', hex: '#1e2030', use: 'Secondary bg · cards' },
+        { name: 'crust',  hex: '#181926', use: 'Deepest bg · sidebars' },
+      ]},
+      { title: 'Surfaces', colors: [
+        { name: 'surface0', hex: '#363a4f', use: 'Cards · inputs' },
+        { name: 'surface1', hex: '#494d64', use: 'Hover states · dividers' },
+        { name: 'surface2', hex: '#5b6078', use: 'Active borders' },
+      ]},
+      { title: 'Text', colors: [
+        { name: 'text',     hex: '#cad3f5', use: 'Primary text' },
+        { name: 'subtext1', hex: '#b8c0e0', use: 'Secondary text' },
+        { name: 'subtext0', hex: '#a5adcb', use: 'Placeholders · labels' },
+        { name: 'overlay2', hex: '#939ab7', use: 'Disabled text' },
+        { name: 'overlay1', hex: '#8087a2', use: 'Code comments' },
+        { name: 'overlay0', hex: '#6e738d', use: 'Very muted text' },
+      ]},
+      { title: 'Accents', colors: [
+        { name: 'rosewater', hex: '#f4dbd6', use: 'Decorative borders · hover' },
+        { name: 'flamingo',  hex: '#f0c6c6', use: 'Soft alerts · icons' },
+        { name: 'pink',      hex: '#f5bde6', use: 'Favorites · positive actions' },
+        { name: 'mauve',     hex: '#c6a0f6', use: 'Primary accent · links · focus' },
+        { name: 'red',       hex: '#ed8796', use: 'Errors · destructive' },
+        { name: 'maroon',    hex: '#ee99a0', use: 'Secondary warnings' },
+        { name: 'peach',     hex: '#f5a97f', use: 'Warnings · attention badges' },
+        { name: 'yellow',    hex: '#eed49f', use: 'Info · notes · tips' },
+        { name: 'green',     hex: '#a6da95', use: 'Success · online · confirm' },
+        { name: 'teal',      hex: '#8bd5ca', use: 'Secondary accent · tech tags' },
+        { name: 'sky',       hex: '#91d7e3', use: 'Secondary links · info icons' },
+        { name: 'sapphire',  hex: '#7dc4e4', use: 'Cold accent · selection' },
+        { name: 'blue',      hex: '#8aadf4', use: 'Main alt accent · code' },
+        { name: 'lavender',  hex: '#b7bdf8', use: 'Soft accent · decorative titles' },
+      ]},
+    ]
+  },
+
+  mocha: {
+    name: 'Mocha', tag: 'Dark · Deep', isLight: false,
+    desc: 'The darkest and most popular flavor. Deep purple-tinged blacks — the classic Catppuccin look.',
+    accent: '#cba6f7',
+    bg: '#1e1e2e', fg: '#cdd6f4', sub: '#a6adc8', muted: '#6c7086',
+    s0: '#313244', s1: '#45475a', gridLine: 'rgba(245,224,220,.06)',
+    sections: [
+      { title: 'Backgrounds', colors: [
+        { name: 'base',   hex: '#1e1e2e', use: 'Main app background' },
+        { name: 'mantle', hex: '#181825', use: 'Secondary bg · cards' },
+        { name: 'crust',  hex: '#11111b', use: 'Deepest bg · sidebars' },
+      ]},
+      { title: 'Surfaces', colors: [
+        { name: 'surface0', hex: '#313244', use: 'Cards · inputs' },
+        { name: 'surface1', hex: '#45475a', use: 'Hover states · dividers' },
+        { name: 'surface2', hex: '#585b70', use: 'Active borders' },
+      ]},
+      { title: 'Text', colors: [
+        { name: 'text',     hex: '#cdd6f4', use: 'Primary text' },
+        { name: 'subtext1', hex: '#bac2de', use: 'Secondary text' },
+        { name: 'subtext0', hex: '#a6adc8', use: 'Placeholders · labels' },
+        { name: 'overlay2', hex: '#9399b2', use: 'Disabled text' },
+        { name: 'overlay1', hex: '#7f849c', use: 'Code comments' },
+        { name: 'overlay0', hex: '#6c7086', use: 'Very muted text' },
+      ]},
+      { title: 'Accents', colors: [
+        { name: 'rosewater', hex: '#f5e0dc', use: 'Decorative borders · hover' },
+        { name: 'flamingo',  hex: '#f2cdcd', use: 'Soft alerts · icons' },
+        { name: 'pink',      hex: '#f5c2e7', use: 'Favorites · positive actions' },
+        { name: 'mauve',     hex: '#cba6f7', use: 'Primary accent · links · focus' },
+        { name: 'red',       hex: '#f38ba8', use: 'Errors · destructive' },
+        { name: 'maroon',    hex: '#eba0ac', use: 'Secondary warnings' },
+        { name: 'peach',     hex: '#fab387', use: 'Warnings · attention badges' },
+        { name: 'yellow',    hex: '#f9e2af', use: 'Info · notes · tips' },
+        { name: 'green',     hex: '#a6e3a1', use: 'Success · online · confirm' },
+        { name: 'teal',      hex: '#94e2d5', use: 'Secondary accent · tech tags' },
+        { name: 'sky',       hex: '#89dceb', use: 'Secondary links · info icons' },
+        { name: 'sapphire',  hex: '#74c7ec', use: 'Cold accent · selection' },
+        { name: 'blue',      hex: '#89b4fa', use: 'Main alt accent · code' },
+        { name: 'lavender',  hex: '#b4befe', use: 'Soft accent · decorative titles' },
+      ]},
+    ]
+  },
+
+  tokyo: {
+    name: 'Tokyo Night', tag: 'Community · Dark', isLight: false,
+    desc: 'Inspired by Tokyo\'s neon nights. Deep navy backgrounds with vibrant blue and purple accents.',
+    accent: '#7aa2f7',
+    bg: '#1a1b26', fg: '#c0caf5', sub: '#9aa5ce', muted: '#565f89',
+    s0: '#24283b', s1: '#414868', gridLine: 'rgba(122,162,247,.05)',
+    sections: [
+      { title: 'Backgrounds', colors: [
+        { name: 'bg',      hex: '#1a1b26', use: 'Main background' },
+        { name: 'bg_dark', hex: '#16161e', use: 'Deeper bg · sidebars' },
+        { name: 'bg_alt',  hex: '#1f2335', use: 'Alt background' },
+      ]},
+      { title: 'Surfaces', colors: [
+        { name: 'bg_highlight', hex: '#292e42', use: 'Cards · hover' },
+        { name: 'terminal_black', hex: '#414868', use: 'Borders · dividers' },
+        { name: 'comment',  hex: '#565f89', use: 'Muted elements' },
+      ]},
+      { title: 'Text', colors: [
+        { name: 'fg',       hex: '#c0caf5', use: 'Primary text' },
+        { name: 'fg_dark',  hex: '#a9b1d6', use: 'Secondary text' },
+        { name: 'fg_gutter', hex: '#3b4261', use: 'Very muted text' },
+        { name: 'dark3',    hex: '#545c7e', use: 'Placeholders' },
+        { name: 'dark5',    hex: '#737aa2', use: 'Disabled text' },
+      ]},
+      { title: 'Accents', colors: [
+        { name: 'blue',    hex: '#7aa2f7', use: 'Primary accent · links' },
+        { name: 'blue0',   hex: '#3d59a1', use: 'Deep blue · selection' },
+        { name: 'blue1',   hex: '#2ac3de', use: 'Cyan · info' },
+        { name: 'blue2',   hex: '#0db9d7', use: 'Bright cyan · highlights' },
+        { name: 'blue5',   hex: '#89ddff', use: 'Light blue · strings' },
+        { name: 'blue6',   hex: '#b4f9f8', use: 'Ice blue · decorative' },
+        { name: 'blue7',   hex: '#394b70', use: 'Dark blue surface' },
+        { name: 'magenta', hex: '#bb9af7', use: 'Keywords · purple accent' },
+        { name: 'magenta2',hex: '#ff007c', use: 'Hot pink · errors · alerts' },
+        { name: 'purple',  hex: '#9d7cd8', use: 'Secondary purple' },
+        { name: 'orange',  hex: '#ff9e64', use: 'Warnings · numbers' },
+        { name: 'yellow',  hex: '#e0af68', use: 'Strings · tips' },
+        { name: 'green',   hex: '#9ece6a', use: 'Success · functions' },
+        { name: 'green1',  hex: '#73daca', use: 'Teal · methods' },
+        { name: 'green2',  hex: '#41a6b5', use: 'Types · constructors' },
+        { name: 'teal',    hex: '#1abc9c', use: 'Bright teal · online' },
+        { name: 'red',     hex: '#f7768e', use: 'Errors · destructive' },
+        { name: 'red1',    hex: '#db4b4b', use: 'Deep red · critical' },
+      ]},
+    ]
+  },
+
+  'rose-pine': {
+    name: 'Rosé Pine', tag: 'Community · Dark', isLight: false,
+    desc: 'All natural pine, faux fur and a bit of soho vibes. Muted warm tones with rose and gold accents.',
+    accent: '#ebbcba',
+    bg: '#191724', fg: '#e0def4', sub: '#908caa', muted: '#6e6a86',
+    s0: '#1f1d2e', s1: '#26233a', gridLine: 'rgba(235,188,186,.05)',
+    sections: [
+      { title: 'Backgrounds', colors: [
+        { name: 'base',    hex: '#191724', use: 'Main background' },
+        { name: 'surface', hex: '#1f1d2e', use: 'Cards · panels' },
+        { name: 'overlay', hex: '#26233a', use: 'Elevated surfaces' },
+      ]},
+      { title: 'Muted / Subtle', colors: [
+        { name: 'muted',   hex: '#6e6a86', use: 'Muted elements · icons' },
+        { name: 'subtle',  hex: '#908caa', use: 'Secondary text · borders' },
+      ]},
+      { title: 'Text', colors: [
+        { name: 'text',    hex: '#e0def4', use: 'Primary text' },
+      ]},
+      { title: 'Accents', colors: [
+        { name: 'love',    hex: '#eb6f92', use: 'Errors · destructive · love' },
+        { name: 'gold',    hex: '#f6c177', use: 'Warnings · numbers · gold' },
+        { name: 'rose',    hex: '#ebbcba', use: 'Primary accent · keywords' },
+        { name: 'pine',    hex: '#31748f', use: 'Functions · cold accent' },
+        { name: 'foam',    hex: '#9ccfd8', use: 'Types · info · foam' },
+        { name: 'iris',    hex: '#c4a7e7', use: 'Secondary accent · iris' },
+        { name: 'highlight_low',  hex: '#21202e', use: 'Low highlight bg' },
+        { name: 'highlight_med',  hex: '#403d52', use: 'Selection' },
+        { name: 'highlight_high', hex: '#524f67', use: 'Active selection' },
+      ]},
+    ]
+  },
+
+  nord: {
+    name: 'Nord', tag: 'Community · Arctic', isLight: false,
+    desc: 'An arctic, north-bluish color palette. Clean and minimal — inspired by the beauty of the arctic.',
+    accent: '#88c0d0',
+    bg: '#2e3440', fg: '#eceff4', sub: '#d8dee9', muted: '#4c566a',
+    s0: '#3b4252', s1: '#434c5e', gridLine: 'rgba(136,192,208,.05)',
+    sections: [
+      { title: 'Polar Night', colors: [
+        { name: 'nord0', hex: '#2e3440', use: 'Main background' },
+        { name: 'nord1', hex: '#3b4252', use: 'Cards · elevated surfaces' },
+        { name: 'nord2', hex: '#434c5e', use: 'Borders · dividers' },
+        { name: 'nord3', hex: '#4c566a', use: 'Muted elements · comments' },
+      ]},
+      { title: 'Snow Storm', colors: [
+        { name: 'nord4', hex: '#d8dee9', use: 'Secondary text' },
+        { name: 'nord5', hex: '#e5e9f0', use: 'Primary text' },
+        { name: 'nord6', hex: '#eceff4', use: 'Bright text · highlights' },
+      ]},
+      { title: 'Frost', colors: [
+        { name: 'nord7',  hex: '#8fbcbb', use: 'Types · constructors' },
+        { name: 'nord8',  hex: '#88c0d0', use: 'Primary accent · links' },
+        { name: 'nord9',  hex: '#81a1c1', use: 'Keywords · operators' },
+        { name: 'nord10', hex: '#5e81ac', use: 'Deep blue · selection' },
+      ]},
+      { title: 'Aurora', colors: [
+        { name: 'nord11', hex: '#bf616a', use: 'Errors · destructive' },
+        { name: 'nord12', hex: '#d08770', use: 'Warnings · numbers' },
+        { name: 'nord13', hex: '#ebcb8b', use: 'Strings · tips · gold' },
+        { name: 'nord14', hex: '#a3be8c', use: 'Success · strings' },
+        { name: 'nord15', hex: '#b48ead', use: 'Secondary accent · purple' },
+      ]},
+    ]
+  },
+
+  gruvbox: {
+    name: 'Gruvbox', tag: 'Community · Retro', isLight: false,
+    desc: 'Retro groove color scheme. Earthy warm tones with high-contrast accents — timeless and readable.',
+    accent: '#d79921',
+    bg: '#282828', fg: '#ebdbb2', sub: '#a89984', muted: '#665c54',
+    s0: '#3c3836', s1: '#504945', gridLine: 'rgba(215,153,33,.06)',
+    sections: [
+      { title: 'Backgrounds', colors: [
+        { name: 'bg',      hex: '#282828', use: 'Main background' },
+        { name: 'bg_h',    hex: '#1d2021', use: 'Hard bg · sidebars' },
+        { name: 'bg_s',    hex: '#32302f', use: 'Soft bg' },
+        { name: 'bg1',     hex: '#3c3836', use: 'Cards · inputs' },
+        { name: 'bg2',     hex: '#504945', use: 'Hover · dividers' },
+        { name: 'bg3',     hex: '#665c54', use: 'Active borders' },
+        { name: 'bg4',     hex: '#7c6f64', use: 'Muted surfaces' },
+      ]},
+      { title: 'Foregrounds', colors: [
+        { name: 'fg',      hex: '#ebdbb2', use: 'Primary text' },
+        { name: 'fg1',     hex: '#ebdbb2', use: 'Alt primary text' },
+        { name: 'fg2',     hex: '#d5c4a1', use: 'Secondary text' },
+        { name: 'fg3',     hex: '#bdae93', use: 'Muted text' },
+        { name: 'fg4',     hex: '#a89984', use: 'Very muted text' },
+      ]},
+      { title: 'Accents', colors: [
+        { name: 'red',        hex: '#cc241d', use: 'Errors · destructive' },
+        { name: 'red_bright', hex: '#fb4934', use: 'Bright errors' },
+        { name: 'green',      hex: '#98971a', use: 'Success · strings' },
+        { name: 'green_bright',hex: '#b8bb26', use: 'Bright success' },
+        { name: 'yellow',     hex: '#d79921', use: 'Primary accent · warnings' },
+        { name: 'yellow_bright',hex:'#fabd2f', use: 'Bright yellow · highlights' },
+        { name: 'blue',       hex: '#458588', use: 'Links · functions' },
+        { name: 'blue_bright', hex: '#83a598', use: 'Bright blue · types' },
+        { name: 'purple',     hex: '#b16286', use: 'Keywords · secondary accent' },
+        { name: 'purple_bright',hex:'#d3869b', use: 'Bright purple' },
+        { name: 'aqua',       hex: '#689d6a', use: 'Methods · teal' },
+        { name: 'aqua_bright', hex: '#8ec07c', use: 'Bright aqua' },
+        { name: 'orange',     hex: '#d65d0e', use: 'Numbers · attention' },
+        { name: 'orange_bright',hex:'#fe8019', use: 'Bright orange' },
+      ]},
+    ]
+  },
+
+  dracula: {
+    name: 'Dracula', tag: 'Community · Dark', isLight: false,
+    desc: 'A dark theme for those who code at night. High-saturation accents on near-black backgrounds.',
+    accent: '#bd93f9',
+    bg: '#282a36', fg: '#f8f8f2', sub: '#6272a4', muted: '#44475a',
+    s0: '#343746', s1: '#44475a', gridLine: 'rgba(189,147,249,.05)',
+    sections: [
+      { title: 'Backgrounds', colors: [
+        { name: 'background', hex: '#282a36', use: 'Main background' },
+        { name: 'current line',hex: '#44475a', use: 'Current line · cards' },
+        { name: 'selection',  hex: '#44475a', use: 'Selection highlight' },
+      ]},
+      { title: 'Text', colors: [
+        { name: 'foreground', hex: '#f8f8f2', use: 'Primary text' },
+        { name: 'comment',    hex: '#6272a4', use: 'Comments · muted text' },
+      ]},
+      { title: 'Accents', colors: [
+        { name: 'cyan',    hex: '#8be9fd', use: 'Types · constructors · info' },
+        { name: 'green',   hex: '#50fa7b', use: 'Success · strings · online' },
+        { name: 'orange',  hex: '#ffb86c', use: 'Constants · warnings' },
+        { name: 'pink',    hex: '#ff79c6', use: 'Keywords · primary accent' },
+        { name: 'purple',  hex: '#bd93f9', use: 'Functions · secondary accent' },
+        { name: 'red',     hex: '#ff5555', use: 'Errors · destructive' },
+        { name: 'yellow',  hex: '#f1fa8c', use: 'Classes · tips · notes' },
+      ]},
+    ]
+  },
+
+};
+
+// ─────────────────────────────────────────────
+// MINI UI PREVIEWS
+// ─────────────────────────────────────────────
+function getMiniUI(flavor, sectionTitle) {
+  const p = PALETTES[flavor];
+
+  if (sectionTitle === 'Backgrounds') {
+    const c = p.sections[0].colors;
+    return `
+      <div style="background:${c[1]?.hex || p.s0};border-radius:10px;padding:16px;font-family:'DM Mono',monospace;font-size:11px;display:flex;gap:10px">
+        <div style="width:130px;background:${c[2]?.hex || p.bg};border-radius:7px;padding:12px;flex-shrink:0">
+          <div style="font-size:9px;color:${p.muted};letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px">nav</div>
+          ${['Dashboard','Projects','Settings','Profile'].map((t,i) => `<div style="padding:6px 8px;border-radius:5px;background:${i===0?p.accent+'22':'transparent'};color:${i===0?p.accent:p.sub};margin-bottom:3px;cursor:pointer">${t}</div>`).join('')}
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+          <div style="background:${c[0]?.hex || p.bg};border-radius:7px;padding:12px;color:${p.fg};font-size:12px;font-weight:500">Main content area</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="background:${p.s0};border-radius:7px;padding:10px;color:${p.sub};font-size:10px">Card A</div>
+            <div style="background:${p.s0};border-radius:7px;padding:10px;color:${p.sub};font-size:10px">Card B</div>
+          </div>
+        </div>
+      </div>`;
   }
+
+  if (sectionTitle === 'Surfaces' || sectionTitle === 'Polar Night' || sectionTitle === 'Backgrounds' || sectionTitle === 'Muted / Subtle') {
+    return `
+      <div style="background:${p.bg};border-radius:10px;padding:16px;font-family:'DM Mono',monospace;font-size:11px">
+        <div style="display:flex;gap:8px;margin-bottom:10px">
+          <div style="flex:1;background:${p.s0};border-radius:7px;padding:10px">
+            <div style="color:${p.muted};font-size:9px;margin-bottom:4px">REQUESTS</div>
+            <div style="color:${p.fg};font-size:18px;font-family:'Syne',sans-serif;font-weight:700">2,847</div>
+          </div>
+          <div style="flex:1;background:${p.s0};border-radius:7px;padding:10px">
+            <div style="color:${p.muted};font-size:9px;margin-bottom:4px">ERRORS</div>
+            <div style="color:${p.fg};font-size:18px;font-family:'Syne',sans-serif;font-weight:700">12</div>
+          </div>
+          <div style="flex:1;background:${p.s0};border-radius:7px;padding:10px">
+            <div style="color:${p.muted};font-size:9px;margin-bottom:4px">UPTIME</div>
+            <div style="color:${p.fg};font-size:18px;font-family:'Syne',sans-serif;font-weight:700">99.9%</div>
+          </div>
+        </div>
+        <div style="background:${p.s0};border-radius:7px;padding:12px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="color:${p.fg}">Recent activity</span>
+            <span style="color:${p.muted};font-size:10px">today</span>
+          </div>
+          ${['Build passed','PR merged','Deploy ok'].map(t=>`<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid ${p.s1}22"><div style="width:6px;height:6px;border-radius:50%;background:${p.accent}"></div><span style="color:${p.sub};font-size:10px">${t}</span></div>`).join('')}
+        </div>
+      </div>`;
+  }
+
+  if (sectionTitle === 'Text' || sectionTitle === 'Foregrounds' || sectionTitle === 'Snow Storm') {
+    return `
+      <div style="background:${p.bg};border-radius:10px;padding:20px;font-family:'DM Mono',monospace">
+        <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:700;color:${p.fg};margin-bottom:4px">Typography scale</div>
+        <div style="font-size:13px;color:${p.sub};margin-bottom:3px">Secondary — subtext level one</div>
+        <div style="font-size:12px;color:${p.muted};margin-bottom:8px">Muted — placeholder and label text</div>
+        <div style="background:${p.s0};border-radius:7px;padding:10px">
+          <span style="color:${p.fg}">const </span><span style="color:${p.accent}">greet</span><span style="color:${p.sub}"> = </span><span style="color:${p.fg}">(name) </span><span style="color:${p.sub}">=&gt; </span><span style="color:${p.fg}">&#96;Hello, </span><span style="color:${p.accent}">\${name}</span><span style="color:${p.fg}">&#96;</span>
+        </div>
+      </div>`;
+  }
+
+  // Accents / Aurora / etc — show a component UI
+  const accentColors = p.sections[p.sections.length - 1].colors;
+  const green = accentColors.find(c => c.name.includes('green'))?.hex || p.accent;
+  const red   = accentColors.find(c => c.name.includes('red'))?.hex   || '#f38ba8';
+  const yellow= accentColors.find(c => c.name.includes('yellow') || c.name.includes('gold'))?.hex || '#f9e2af';
+  const blue  = accentColors.find(c => c.name === 'blue' || c.name === 'foam' || c.name === 'nord8' || c.name === 'blue_bright')?.hex || p.accent;
+
+  return `
+    <div style="background:${p.bg};border-radius:10px;padding:16px;font-family:'DM Mono',monospace;font-size:11px">
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <div style="flex:1;background:${p.s0};border-radius:7px;padding:10px;border-left:3px solid ${green}">
+          <div style="color:${green};font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">success</div>
+          <div style="color:${p.fg}">Deploy complete</div>
+        </div>
+        <div style="flex:1;background:${p.s0};border-radius:7px;padding:10px;border-left:3px solid ${red}">
+          <div style="color:${red};font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">error</div>
+          <div style="color:${p.fg}">Build failed</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:10px">
+        <div style="flex:1;background:${p.s0};border-radius:7px;padding:10px;border-left:3px solid ${yellow}">
+          <div style="color:${yellow};font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">warning</div>
+          <div style="color:${p.fg}">High memory usage</div>
+        </div>
+        <div style="flex:1;background:${p.s0};border-radius:7px;padding:10px;border-left:3px solid ${blue}">
+          <div style="color:${blue};font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px">info</div>
+          <div style="color:${p.fg}">Update available</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button style="flex:1;padding:8px;border-radius:6px;background:${p.accent};border:none;color:${p.isLight ? '#fff' : p.bg};font-family:'DM Mono',monospace;font-size:11px;cursor:pointer">Primary</button>
+        <button style="flex:1;padding:8px;border-radius:6px;background:transparent;border:1px solid ${p.s1};color:${p.sub};font-family:'DM Mono',monospace;font-size:11px;cursor:pointer">Secondary</button>
+        <button style="flex:1;padding:8px;border-radius:6px;background:${red}22;border:1px solid ${red}44;color:${red};font-family:'DM Mono',monospace;font-size:11px;cursor:pointer">Danger</button>
+      </div>
+    </div>`;
+}
+
+// ─────────────────────────────────────────────
+// RENDER
+// ─────────────────────────────────────────────
+function renderPalette(flavorKey) {
+  const p = PALETTES[flavorKey];
+  const main = document.getElementById('main');
+
+  // Update CSS vars
+  document.documentElement.style.setProperty('--bg', p.bg);
+  document.documentElement.style.setProperty('--fg', p.fg);
+  document.documentElement.style.setProperty('--sub', p.sub);
+  document.documentElement.style.setProperty('--muted', p.muted);
+  document.documentElement.style.setProperty('--s0', p.s0);
+  document.documentElement.style.setProperty('--s1', p.s1);
+  document.documentElement.style.setProperty('--accent', p.accent);
+  document.documentElement.style.setProperty('--grid-line', p.gridLine);
+
+  let html = `
+    <div class="palette-header">
+      <div class="palette-eyebrow">${p.tag}</div>
+      <div class="palette-title">${p.name}</div>
+      <div class="palette-meta">
+        <div class="palette-desc">${p.desc}</div>
+        <div class="palette-badge">${p.sections.reduce((a,s)=>a+s.colors.length,0)} colores</div>
+      </div>
+    </div>`;
+
+  const icons = ['○','□','Tt','◈'];
+  p.sections.forEach((sec, si) => {
+    html += `
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">${icons[si] || '·'}</div>
+          <div class="section-title">${sec.title}</div>
+          <div class="section-line"></div>
+          <div class="section-count">${sec.colors.length}</div>
+        </div>
+        <div class="swatches">`;
+
+    sec.colors.forEach(c => {
+      html += `
+          <div class="swatch" onclick="copyColor('${c.hex}', '${c.name}', this)">
+            <div class="swatch-color" style="background:${c.hex}">
+              <div class="swatch-check">✓</div>
+            </div>
+            <div class="swatch-info">
+              <div class="swatch-name">${c.name}</div>
+              <div class="swatch-hex">${c.hex}</div>
+              <div class="swatch-use">${c.use}</div>
+            </div>
+          </div>`;
+    });
+
+    html += `</div>
+        <div class="preview-wrap">
+          <div class="preview-label">vista previa</div>
+          ${getMiniUI(flavorKey, sec.title)}
+        </div>
+      </div>`;
+  });
+
+  html += `
+    <div class="section" style="margin-bottom:0">
+      <div class="section-header">
+        <div class="section-icon">Aa</div>
+        <div class="section-title">Fuentes utilizadas</div>
+        <div class="section-line"></div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px">
+        <div class="swatch" style="width:auto;flex:1;min-width:180px;clip-path:none;border-radius:12px" onclick="copyColor('Syne','Syne',this)">
+          <div class="swatch-color" style="background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;height:72px">
+            <span style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--fg)">Syne</span>
+          </div>
+          <div class="swatch-info">
+            <div class="swatch-name">Syne</div>
+            <div class="swatch-hex">google fonts</div>
+            <div class="swatch-use">Títulos · headings · display · peso 700–800</div>
+          </div>
+        </div>
+        <div class="swatch" style="width:auto;flex:1;min-width:180px;clip-path:none;border-radius:12px" onclick="copyColor('DM Mono','DM Mono',this)">
+          <div class="swatch-color" style="background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;height:72px">
+            <span style="font-family:'DM Mono',monospace;font-size:20px;font-weight:400;color:var(--fg)">DM Mono</span>
+          </div>
+          <div class="swatch-info">
+            <div class="swatch-name">DM Mono</div>
+            <div class="swatch-hex">google fonts</div>
+            <div class="swatch-use">Cuerpo · etiquetas · código · valores hex · peso 400–500</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  main.innerHTML = html;
+}
+
+// ─────────────────────────────────────────────
+// INTERACTIONS
+// ─────────────────────────────────────────────
+let toastTimer;
+
+function copyColor(hex, name, el) {
+  navigator.clipboard.writeText(hex).then(() => {
+    document.querySelectorAll('.swatch.copied').forEach(s => s.classList.remove('copied'));
+    el.classList.add('copied');
+    document.getElementById('toast-dot').style.background = hex;
+    document.getElementById('toast-text').textContent = `${name}  ${hex}`;
+    document.getElementById('toast').classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      document.getElementById('toast').classList.remove('show');
+      el.classList.remove('copied');
+    }, 1600);
+  });
+}
+
+function setFlavor(key) {
+  document.querySelectorAll('.sidebar-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + key).classList.add('active');
+  renderPalette(key);
+}
+
+// init
+setFlavor('mocha');
 </script>
 </body>
 </html>
